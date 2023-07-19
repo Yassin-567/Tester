@@ -7,7 +7,7 @@ def reply(update, context):
     context.bot.send_message(chat_id=chat_id, text="successfully connected")
 
 # Replace YOUR_TOKEN with your actual bot token
-updater = Updater(token='6386130136:AAHEr6PuyoYBT9pk_KhvTaCKVP5C91RYvPU', use_context=True)
+updater = Updater(token='6386130136:AAEsVZqx0eRWUE3x9HlXxM8WzutfeJD_SoA', use_context=True)
 dispatcher = updater.dispatcher
 dispatcher.add_handler(MessageHandler(Filters.text, reply))
 updater.start_polling()

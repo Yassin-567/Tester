@@ -44,7 +44,7 @@ def handle_video(update: Update, context):
 # Set up the Telegram bot
 def create_app():
     # Replace 'YOUR_BOT_TOKEN' with your actual bot token
-    bot_token = '5909482823:AAHEtxgzV9LJ0bhXzwYldhqqliRw0iufJIA'
+    bot_token = '5877188485:AAH2kX8z5iprNjEDLORGzZ9B_fR9XOx_xXc'
 
     # Initialize the bot
     updater = Updater(token=bot_token, use_context=True)

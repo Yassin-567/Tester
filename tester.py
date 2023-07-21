@@ -17,7 +17,7 @@ def webhook():
     return 'OK'
 
 # Replace YOUR_TOKEN with your actual bot token
-updater = Updater(token='6386130136:AAEsVZqx0eRWUE3x9HlXxM8WzutfeJD_SoA', use_context=True)
+updater = Updater(token='6386130136:AAFK9RLosIImpbcBXTFxGn0CUgrn7ObCvDc', use_context=True)
 dispatcher = updater.dispatcher
 dispatcher.add_handler(MessageHandler(Filters.text, reply))
 updater.start_polling()

@@ -10,7 +10,7 @@ import tornado.gen
 # Set up logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
-logger = logging.getLogger(name)
+logger = logging.getLogger(__name__)  # Use __name__ to get the current module name
 
 # Define the function to handle /start command
 def start(chat_id):
@@ -61,7 +61,7 @@ def make_app():
         (r"/", TelegramBotHandler),
     ])
 
-if name == "main":
+if __name__ == "__main__":
     # Replace 'YOUR_BOT_TOKEN' with your actual bot token
     bot_token = '6266356161:AAEd7RPG1NnYlYr6rDikURVDzZGHtyozeA8'
     bot = telepot.Bot(bot_token)

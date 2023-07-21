@@ -1,6 +1,6 @@
 import logging
 import os
-from telegram import Update
+from telegram import Update, Video
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from moviepy.editor import VideoFileClip
 
@@ -17,26 +17,29 @@ def start(update: Update, context):
 def handle_video(update: Update, context):
     video = update.message.video
 
-    # Get the file path of the video on Telegram's servers
-    file_path = context.bot.get_file(video.file_id).file_path
+    if isinstance(video, Video):
+        # Get the file path of the video on Telegram's servers
+        file_path = context.bot.get_file(video.file_id).file_path
 
-    # Perform video compression using MoviePy
-    clip = VideoFileClip(file_path)
+        # Perform video compression using MoviePy
+        clip = VideoFileClip(file_path)
 
-    # Adjust the compression settings
-    compressed_file = "compressed_video.mp4"
-    codec = 'libx265'  # Change the codec to 'libvpx-vp9' for VP9 compression
-    bitrate = '250k'  # Adjust the bitrate as desired (e.g., '1M' for 1 Mbps)
+        # Adjust the compression settings
+        compressed_file = "compressed_video.mp4"
+        codec = 'libx265'  # Change the codec to 'libvpx-vp9' for VP9 compression
+        bitrate = '250k'  # Adjust the bitrate as desired (e.g., '1M' for 1 Mbps)
 
-    # Compress the video with the specified codec and bitrate
-    clip.write_videofile(compressed_file, codec=codec, bitrate=bitrate)
+        # Compress the video with the specified codec and bitrate
+        clip.write_videofile(compressed_file, codec=codec, bitrate=bitrate)
 
-    # Send the compressed video
-    context.bot.send_video(chat_id=update.effective_chat.id, video=open(compressed_file, 'rb'))
+        # Send the compressed video
+        context.bot.send_video(chat_id=update.effective_chat.id, video=open(compressed_file, 'rb'))
 
-    # Clean up the temporary files
-    clip.close()
-    os.remove(compressed_file)
+        # Clean up the temporary files
+        clip.close()
+        os.remove(compressed_file)
+    else:
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Please send a video file.")
 
 # Set up the Telegram bot
 def create_app():

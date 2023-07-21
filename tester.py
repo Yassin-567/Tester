@@ -63,7 +63,7 @@ def make_app():
 
 if __name__ == "__main__":
     # Replace 'YOUR_BOT_TOKEN' with your actual bot token
-    bot_token = '6266356161:AAEd7RPG1NnYlYr6rDikURVDzZGHtyozeA8'
+    bot_token = '5909482823:AAFf_ZOUPC7cIeAVOKMEpUmPeBGmqipqF98'
     bot = telepot.Bot(bot_token)
 
     app = make_app()

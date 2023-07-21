@@ -39,9 +39,9 @@ def handle_video(update: Update, context):
     os.remove(compressed_file)
 
 # Set up the Telegram bot
-def main():
+def create_app():
     # Replace 'YOUR_BOT_TOKEN' with your actual bot token
-    bot_token = '5909482823:AAFf_ZOUPC7cIeAVOKMEpUmPeBGmqipqF98'
+    bot_token = '5909482823:AAHEtxgzV9LJ0bhXzwYldhqqliRw0iufJIA'
 
     # Initialize the bot
     updater = Updater(token=bot_token, use_context=True)
@@ -55,12 +55,15 @@ def main():
     video_handler = MessageHandler(Filters.video, handle_video)
     dispatcher.add_handler(video_handler)
 
-    # Start the bot in polling mode
+    # Start the bot
     updater.start_polling()
     logger.info("Bot started!")
 
-    # Run the bot until you press Ctrl-C
-    updater.idle()
+    return updater
+
+app = create_app()
 
 if __name__ == '__main__':
-    main()
+    import os
+    PORT = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=PORT)

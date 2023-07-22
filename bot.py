@@ -59,7 +59,9 @@ def create_app():
     dispatcher.add_handler(video_handler)
 
     # Start the bot
-    updater.start_polling()
+    while True:
+        updates = updater.getUpdates()
+        handle_updates(updates)
     logger.info("Bot started!")
 
     return updater

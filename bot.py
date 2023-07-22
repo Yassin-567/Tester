@@ -1,7 +1,7 @@
 import logging
 import os
 from telegram import Update, Video
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, getUpdates
 from moviepy.editor import VideoFileClip
 
 # Set up logging
@@ -59,9 +59,8 @@ def create_app():
     dispatcher.add_handler(video_handler)
 
     # Start the bot
-    while True:
-        updates = updater.getUpdates()
-        handle_updates(updates)
+    updates = getUpdates()
+    handle_updates(updates)
     logger.info("Bot started!")
 
     return updater

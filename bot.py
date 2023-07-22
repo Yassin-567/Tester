@@ -1,7 +1,7 @@
 import logging
 import os
-from telegram import Update, Video
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, getUpdates
+from aiogram import Bot, Dispatcher, types
+from aiogram.utils.executor import start_polling
 from moviepy.editor import VideoFileClip
 
 # Set up logging
@@ -10,16 +10,16 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 # Define the function to handle /start command
-def start(update: Update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Hello! Send me a video, and I'll compress it for you.")
+async def start(message: types.Message):
+    await message.reply("Hello! Send me a video, and I'll compress it for you.")
 
 # Define the function to handle video messages
-def handle_video(update: Update, context):
-    video = update.message.video
+async def handle_video(message: types.Message):
+    video = message.video
 
-    if isinstance(video, Video):
+    if isinstance(video, types.Video):
         # Get the file path of the video on Telegram's servers
-        file_path = context.bot.get_file(video.file_id).file_path
+        file_path = await message.get_video()
 
         # Perform video compression using MoviePy
         clip = VideoFileClip(file_path)
@@ -33,41 +33,21 @@ def handle_video(update: Update, context):
         clip.write_videofile(compressed_file, codec=codec, bitrate=bitrate)
 
         # Send the compressed video
-        context.bot.send_video(chat_id=update.effective_chat.id, video=open(compressed_file, 'rb'))
+        await message.reply_video(open(compressed_file, 'rb'))
 
         # Clean up the temporary files
         clip.close()
         os.remove(compressed_file)
     else:
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Please send a video file.")
+        await message.reply("Please send a video file.")
 
 # Set up the Telegram bot
-def create_app():
-    # Replace 'YOUR_BOT_TOKEN' with your actual bot token
-    bot_token = '5877188485:AAH2kX8z5iprNjEDLORGzZ9B_fR9XOx_xXc'
+bot = Bot(token='5877188485:AAH2kX8z5iprNjEDLORGzZ9B_fR9XOx_xXc')
+dp = Dispatcher(bot)
 
-    # Initialize the bot
-    updater = Updater(token=bot_token, use_context=True)
-    dispatcher = updater.dispatcher
+# Add command handlers
+dp.add_handler(CommandHandler('start', start))
+dp.add_handler(MessageHandler(Filters.video, handle_video))
 
-    # Add command handlers
-    start_handler = CommandHandler('start', start)
-    dispatcher.add_handler(start_handler)
-
-    # Add message handlers
-    video_handler = MessageHandler(Filters.video, handle_video)
-    dispatcher.add_handler(video_handler)
-
-    # Start the bot
-    updates = getUpdates()
-    handle_updates(updates)
-    logger.info("Bot started!")
-
-    return updater
-
-app = create_app()
-
-if __name__ == '__main__':
-    import os
-    PORT = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=PORT)
+# Start the bot
+start_polling(dp)

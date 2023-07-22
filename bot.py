@@ -41,13 +41,16 @@ async def handle_video(message: types.Message):
     else:
         await message.reply("Please send a video file.")
 
+# Import the add_handler() method
+from aiogram.dispatcher.handler import add_handler
+
 # Set up the Telegram bot
 bot = Bot(token='5877188485:AAH2kX8z5iprNjEDLORGzZ9B_fR9XOx_xXc')
 dp = Dispatcher(bot)
 
 # Add command handlers
-dp.add_handler(CommandHandler('start', start))
-dp.add_handler(MessageHandler(Filters.video, handle_video))
+add_handler(CommandHandler('start', start))
+add_handler(MessageHandler(Filters.video, handle_video))
 
 # Start the bot
 start_polling(dp)

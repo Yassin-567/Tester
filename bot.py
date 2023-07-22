@@ -9,7 +9,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 # Initialize the bot with your token
-bot_token = 'YOUR_TELEGRAM_BOT_TOKEN_HERE'
+bot_token = '5877188485:AAH2kX8z5iprNjEDLORGzZ9B_fR9XOx_xXc'
 bot = Bot(token=bot_token)
 dispatcher = Dispatcher(bot)
 
